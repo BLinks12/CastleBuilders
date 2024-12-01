@@ -1,4 +1,4 @@
-// Array of castle images with .png.png extension
+// Array of castle images
 const images = [
   'castle1.png.png',
   'castle2.png.png',
