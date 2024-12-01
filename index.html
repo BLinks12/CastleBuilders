@@ -1,29 +1,46 @@
-/* General body styling */
-body {
-  font-family: 'Georgia', serif;
-  background: linear-gradient(180deg, #101820, #2a2a2a);
-  color: #f3efe0;
-  margin: 0;
-  padding: 0;
-  text-align: center;
-}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CastleCraftAI - Build Your Legacy</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>CastleCraftAI</h1>
+  </header>
 
-/* Header styling */
-header {
-  background-color: #4d3e28;
-  padding: 20px;
-  text-align: center;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
-}
+  <main>
+    <div class="canvas-container">
+      <img id="canvas-image" class="canvas-content" src="castle1.png.png" alt="Castle">
+    </div>
 
-header h1 {
-  font-size: 3em;
-  color: #f3efe0;
-}
+    <button id="randomize-button">Discover a New Castle!</button>
 
-/* Canvas container */
-.canvas-container {
-  position: relative;
-  width: 90%;
-  max-width: 900px;
-  aspect-ratio: 16 / 9; /
+    <section id="how-it-works">
+      <h2>How It Works</h2>
+      <p>
+        Starting at 80 holders, every 10% increase in holders adds a new castle to the realm. These castles are crafted by the <strong>CastleCraftAI</strong> through the <strong>MidJourney API</strong>, ensuring each one is unique and majestic. Click the button above to explore the castles of this growing empire!
+      </p>
+    </section>
+
+    <section id="castle-lore">
+      <h2>The Lore of CastleCraftAI</h2>
+      <p>
+        CastleCraftAI is a magical project born to build an empire. Every holder plays a role in shaping the kingdom. With each milestone, the realm expands with AI-crafted castles, bringing creativity and community together to create something truly legendary.
+      </p>
+    </section>
+  </main>
+
+  <footer>
+    <div id="social-media">
+      <button class="castle-button" onclick="window.open('https://x.com/BuildersonSol', '_blank')">Follow on X</button>
+      <button class="castle-button" onclick="window.open('https://t.me/+jrwMf7nlw-w2YmM8', '_blank')">Join the Chat</button>
+    </div>
+    <p>© 2024 CastleCraftAI. Build Your Legacy. 🏰</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
