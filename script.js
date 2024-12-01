@@ -1,4 +1,3 @@
-// Array of castle images
 const images = [
   'castle1.png.png',
   'castle2.png.png',
@@ -16,7 +15,6 @@ const images = [
   'castle14.png.png'
 ];
 
-// Randomize image function
 document.getElementById('randomize-button').addEventListener('click', () => {
   const randomIndex = Math.floor(Math.random() * images.length);
   document.getElementById('canvas-image').src = images[randomIndex];
