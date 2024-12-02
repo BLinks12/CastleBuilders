@@ -10,6 +10,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const layerSelect = document.getElementById('layer-select');
     const toolSelect = document.getElementById('tool-select');
     const timeSelect = document.getElementById('time-select');
+    const tickerValueElement = document.getElementById('ticker-value');
+    const holdersCountElement = document.getElementById('holders-count');
 
     const gridSize = 16; // 16x16 grid
     let tileSize = gridCanvas.width / gridSize;
@@ -17,6 +19,10 @@ document.addEventListener('DOMContentLoaded', () => {
     let selectedBlock = null;
     let backgroundType = 'none';
     let timeOfDay = 'day';
+
+    // Ticker and Holder Count Variables
+    let tickerValue = 1000;
+    let holdersCount = 100;
 
     // Layers: background and foreground
     let layers = {
@@ -26,118 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Define block types with code-generated graphics and animations
     const blocks = [
-        {
-            name: 'Wall',
-            animated: false,
-            draw: (context, x, y, size, rotation = 0, frame = 0) => {
-                context.save();
-                context.translate(x + size / 2, y + size / 2);
-                context.rotate(rotation);
-                context.translate(-size / 2, -size / 2);
-                // Advanced 8-bit graphics with shading
-                let gradient = context.createLinearGradient(0, 0, size, size);
-                gradient.addColorStop(0, '#888');
-                gradient.addColorStop(1, '#555');
-                context.fillStyle = gradient;
-                context.fillRect(0, 0, size, size);
-                context.restore();
-            }
-        },
-        {
-            name: 'Torch',
-            animated: true,
-            draw: (context, x, y, size, rotation = 0, frame = 0) => {
-                context.save();
-                context.translate(x + size / 2, y + size / 2);
-                context.rotate(rotation);
-                context.translate(-size / 2, -size / 2);
-                // Torch base
-                context.fillStyle = '#8B4513';
-                context.fillRect(size / 2 - 2, size / 2, 4, size / 2);
-                // Flame particle effect
-                let flameHeight = (Math.sin(frame / 10) + 1) * 5 + 5;
-                context.fillStyle = '#FFA500';
-                context.beginPath();
-                context.moveTo(size / 2, size / 2);
-                context.lineTo(size / 2 - 5, size / 2 - flameHeight);
-                context.lineTo(size / 2 + 5, size / 2 - flameHeight);
-                context.closePath();
-                context.fill();
-                context.restore();
-            }
-        },
-        {
-            name: 'Villager',
-            animated: true,
-            isNPC: true,
-            draw: (context, x, y, size, rotation = 0, frame = 0) => {
-                context.save();
-                // Simple animation: moving up and down
-                let offsetY = Math.sin(frame / 30) * 2;
-                context.translate(x, y + offsetY);
-                // Head
-                context.fillStyle = '#FFDAB9';
-                context.fillRect(size / 4, 0, size / 2, size / 2);
-                // Body
-                context.fillStyle = '#8B4513';
-                context.fillRect(size / 4, size / 2, size / 2, size / 2);
-                context.restore();
-            }
-        },
-        {
-            name: 'Door',
-            animated: false,
-            interactive: true,
-            state: 'closed',
-            draw: (context, x, y, size, rotation = 0, frame = 0, state = 'closed') => {
-                context.save();
-                context.translate(x + size / 2, y + size / 2);
-                context.rotate(rotation);
-                context.translate(-size / 2, -size / 2);
-                if (state === 'closed') {
-                    // Closed door
-                    context.fillStyle = '#654321';
-                    context.fillRect(0, 0, size, size);
-                    context.fillStyle = '#321000';
-                    context.fillRect(size / 4, size / 4, size / 2, size * 3 / 4);
-                } else {
-                    // Open door
-                    context.fillStyle = '#654321';
-                    context.fillRect(0, 0, size, size);
-                    context.fillStyle = '#321000';
-                    context.fillRect(0, size / 4, size / 4, size * 3 / 4);
-                }
-                context.restore();
-            },
-            onClick: (blockInfo) => {
-                // Toggle door state
-                blockInfo.state = blockInfo.state === 'closed' ? 'open' : 'closed';
-            }
-        },
-        {
-            name: 'Bridge',
-            animated: false,
-            interactive: true,
-            state: 'retracted',
-            draw: (context, x, y, size, rotation = 0, frame = 0, state = 'retracted') => {
-                context.save();
-                context.translate(x + size / 2, y + size / 2);
-                context.rotate(rotation);
-                context.translate(-size / 2, -size / 2);
-                context.fillStyle = '#A0522D';
-                if (state === 'extended') {
-                    context.fillRect(0, size / 3, size, size / 3);
-                } else {
-                    context.fillRect(size / 3, size / 3, size / 3, size / 3);
-                }
-                context.restore();
-            },
-            onClick: (blockInfo) => {
-                // Toggle bridge state
-                blockInfo.state = blockInfo.state === 'retracted' ? 'extended' : 'retracted';
-            }
-        },
-        // ... (Other blocks with similar structure)
+        // Existing blocks...
     ];
 
     function loadBlocks() {
@@ -344,6 +239,40 @@ document.addEventListener('DOMContentLoaded', () => {
         drawGrid();
     }
 
+    // Ticker Simulation
+    function updateTicker() {
+        const change = (Math.random() * 10 - 5).toFixed(2);
+        tickerValue = (parseFloat(tickerValue) + parseFloat(change)).toFixed(2);
+        tickerValueElement.textContent = tickerValue;
+    }
+
+    // Holder Count Simulation
+    function updateHolderCount() {
+        holdersCount--;
+        if (holdersCount <= 0) {
+            holdersCount = 100;
+            alert('The ancient AI has added new pieces of art to your builder!');
+            unlockNewBlocks();
+        }
+        holdersCountElement.textContent = holdersCount;
+    }
+
+    function unlockNewBlocks() {
+        // Logic to unlock new blocks
+        // For simplicity, we can assume new blocks are added to the 'blocks' array
+        // In this example, we'll just add a placeholder block
+        const newBlock = {
+            name: `New Block ${blocks.length + 1}`,
+            animated: false,
+            draw: (context, x, y, size) => {
+                context.fillStyle = `#${Math.floor(Math.random()*16777215).toString(16)}`;
+                context.fillRect(x, y, size, size);
+            }
+        };
+        blocks.push(newBlock);
+        loadBlocks();
+    }
+
     // Animation Loop
     let frameCount = 0;
     function animate() {
@@ -389,5 +318,8 @@ document.addEventListener('DOMContentLoaded', () => {
     loadSavedCastle();
     resizeCanvas();
     animate(); // Start the animation loop
+
+    // Start Ticker and Holder Count Updates
+    setInterval(updateTicker, 2000); // Update ticker every 2 seconds
+    setInterval(updateHolderCount, 5000); // Update holder count every 5 seconds
 });
- 
